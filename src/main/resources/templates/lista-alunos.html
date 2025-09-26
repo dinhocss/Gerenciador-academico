@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle de Alunos</title>
+</head>
+<body>
+    <h1>Painel de Controle de Alunos</h1>
+
+    <a th:ref="@{/alunos/novo}">Adicionar Novo Aluno</a>
+    <hr>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="aluno: ${alunos}">
+                <td th:text="${aluno.id}">1</td>
+                <td th:text="${aluno.nome}">Nome do Aluno</td>
+                <td th:text="${aluno.email}">email@aluno.com</td>
+                <td>
+                    <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}">Editar</a>
+
+                    <a th:href="@{/alunos/excluir/{id}(id=${aluno.id})}" onclick="return confirm('Tem certeza que deseja excluir este aluno?')">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/alunos/novo}">Adicionar Novo Aluno</a>
+    <table border="1"></table>
+</body>
+</html>

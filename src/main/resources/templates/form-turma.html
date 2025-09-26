@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Turma</title>
+</head>
+<body>
+<h1>Formulário de Turma</h1>
+<form th:action="@{/turmas/salvar}" th:object="${turma}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+    </div>
+    <div>
+        <label for="ano">Ano:</label>
+        <input type="number" id="ano" th:field="*{ano}" required>
+    </div>
+    <br>
+    <div>
+        <label for="periodo">Período:</label>
+        <input type="text" id="periodo" th:field="*{periodo}" required>
+    </div>
+    <br>
+    <div>
+        <label for="professor">Professor:</label>
+        <select id="professor" th:field="*{professor}">
+            <option value="">Selecione um professor</option>
+            <option th:each="prof : ${professores}"
+                    th:value="${prof.id}"
+                    th:text="${prof.nome}">Nome do Professor</option>
+        </select>
+    </div>
+    <br>
+    <button type="submit">Salvar Turma</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle de Turmas</title>
+</head>
+<body>
+    <h1>Painel de Controle de Turmas</h1>
+    <a th:href="@{/turmas/novo}">Adicionar Nova Turma</a>
+    <hr>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <td>Nome</td>
+                <th>Ano</th>
+                <th>Período</th>
+                <th>Professor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="turma : ${turmas}">
+                <td th:text="${turma.id}">1</td>
+                <td th:text="${turma.nome}"></td>
+                <td th:text="${turma.ano}">2025</td>
+                <td th:text="${turma.periodo}">1</td>
+                <td th:text="${turma.professor?.nome}">Nome do Professor</td>
+                <td>
+                    <a th:href="@{/turmas/editar/{id}(id=${turma.id})}">Editar</a>
+                    <a th:href="@{/turmas/excluir/{id}(id=${turma.id})}" onclick="return confirm('Tem Certeza?');">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

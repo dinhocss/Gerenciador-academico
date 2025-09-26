@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle de Professores</title>
+</head>
+<body>
+<h1>Painel de Controle de Professores</h1>
+
+<a th:ref="@{/professores/novo}">Adicionar Novo Professor</a>
+<hr>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="professor: ${professores}">
+        <td th:text="${professor.id}">1</td>
+        <td th:text="${professor.nome}">Nome do Professor</td>
+        <td th:text="${professor.email}">email@professor.com</td>
+        <td>
+            <a th:href="@{/professores/editar/{id}(id=${professor.id})}">Editar</a>
+
+            <a th:href="@{/professores/excluir/{id}(id=${professor.id})}" onclick="return confirm('Tem certeza que deseja excluir este professor?')">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/professores/novo}">Adicionar Novo Professor</a>
+<table border="1"></table>
+</body>
+</html>
