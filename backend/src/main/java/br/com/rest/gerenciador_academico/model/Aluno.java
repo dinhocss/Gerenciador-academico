@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Set;
 
 
-@Data //para que serve?
+@Data //Lombok (cria automaticamente alguns métodos)
 @Entity
 public class Aluno {
     @Id
@@ -15,6 +15,7 @@ public class Aluno {
     private String nome;
     private String email;
 
+    //Utilizado para fazer com que a relação de um aluno para muitas inscrições seja feita.
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Inscricao> inscricoes;
 }

@@ -13,32 +13,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 
+//Classe que recebe e controla as requisições do navegador.
 @Controller
-@RequestMapping("/alunos")
+@RequestMapping("/alunos") //Prefixo da URL
 public class AlunoController {
 
-    @Autowired
+    @Autowired //Injeção de dependências
     private AlunoRepository alunoRepository;
 
+    //Função para listar todos os alunos persistidos no banco de dados
     @GetMapping("/lista")
     public String listarAlunos(Model model){
         List<Aluno> alunos = alunoRepository.findAll();
         model.addAttribute("alunos", alunos);
-        return "lista-alunos";
+        return "lista-alunos"; //Exibe o arquivo HTML lista-alunos da pasta templates
     }
 
+    //Função que exibe formulário para adição de um novo aluno
     @GetMapping("/novo")
     public String exibirFormularioDeCadastro(Model model){
         model.addAttribute("aluno", new Aluno());
-        return "form-aluno";
+        return "form-aluno"; //Outra página HTML contendo o formulário para entrada de dados
     }
 
+    //A função que é acionada ao pressionar o botão "salvar"
     @PostMapping("/salvar")
     public String salvarAluno(@ModelAttribute("aluno") Aluno aluno){
         alunoRepository.save(aluno);
         return "redirect:/alunos/lista";
     }
 
+    //Exclui um id específico que será passado como parâmetro
     @GetMapping("/excluir/{id}")
     public String excluirAluno(@PathVariable Long id){
         alunoRepository.deleteById(id);

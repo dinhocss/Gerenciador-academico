@@ -27,6 +27,7 @@ public class TurmaController {
         return "lista-turmas";
     }
 
+    //Função que exibe o formulário para uma nova turma, exibindo os professores disponíveis.
     @GetMapping("/novo")
     public String exibirFormularioDeCadastro(Model model){
         List<Professor> professores = professorRepository.findAll();
@@ -34,6 +35,7 @@ public class TurmaController {
         model.addAttribute("professores",professores);
         return "form-turma";
     }
+
 
     @PostMapping("/salvar")
     public String salvarTurma(@ModelAttribute("turma") Turma turma){

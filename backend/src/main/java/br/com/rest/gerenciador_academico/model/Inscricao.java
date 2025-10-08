@@ -13,8 +13,9 @@ public class Inscricao {
 
     private LocalDateTime dataHora;
 
+    //Diz que muitas inscrições podem estar associadas a um aluno.
     @ManyToOne
-    @JoinColumn(name = "aluno_id", nullable = false)
+    @JoinColumn(name = "aluno_id", nullable = false) //Adiciona uma chave estrangeira de nome aluno_id em Inscrição
     private Aluno aluno;
 
     @ManyToOne

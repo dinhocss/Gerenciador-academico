@@ -22,6 +22,6 @@ public class Turma {
     private Professor professor;
 
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonIgnore //Evita loop infinito de serialização
     private Set<Inscricao> inscricoes;
 }

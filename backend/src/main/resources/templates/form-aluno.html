@@ -7,6 +7,7 @@
 <body>
     <h1>Formulário de Aluno</h1>
 
+    <!--Exibe um formulário, no qual ao ser enviado irá buscar na url mapeada para \alunos\salvar, o metodo salvar?-->
     <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <div>
