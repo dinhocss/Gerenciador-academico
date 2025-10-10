@@ -10,50 +10,57 @@ import java.util.List;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 
 //Classe que recebe e controla as requisições do navegador.
-@Controller
-@RequestMapping("/alunos") //Prefixo da URL
+@RestController
+@RequestMapping("/api/alunos") //Prefixo da URL
+@CrossOrigin("http://localhost:5173")
 public class AlunoController {
 
     @Autowired //Injeção de dependências
     private AlunoRepository alunoRepository;
 
     //Função para listar todos os alunos persistidos no banco de dados
-    @GetMapping("/lista")
-    public String listarAlunos(Model model){
-        List<Aluno> alunos = alunoRepository.findAll();
-        model.addAttribute("alunos", alunos);
-        return "lista-alunos"; //Exibe o arquivo HTML lista-alunos da pasta templates
+    @GetMapping
+    public List<Aluno> listarAlunos(){
+        return alunoRepository.findAll();
     }
 
     //Função que exibe formulário para adição de um novo aluno
-    @GetMapping("/novo")
-    public String exibirFormularioDeCadastro(Model model){
-        model.addAttribute("aluno", new Aluno());
-        return "form-aluno"; //Outra página HTML contendo o formulário para entrada de dados
+    @GetMapping("/{id}")
+    public ResponseEntity<Aluno> buscarPorId(@PathVariable Long id){
+        return alunoRepository.findById(id).map(alunoEncontrado -> ResponseEntity.ok(alunoEncontrado)).orElse(ResponseEntity.notFound().build());
     }
 
     //A função que é acionada ao pressionar o botão "salvar"
-    @PostMapping("/salvar")
-    public String salvarAluno(@ModelAttribute("aluno") Aluno aluno){
-        alunoRepository.save(aluno);
-        return "redirect:/alunos/lista";
+    @PostMapping
+    public Aluno salvarAluno(@RequestBody Aluno aluno){
+        return alunoRepository.save(aluno);
     }
 
-    //Exclui um id específico que será passado como parâmetro
-    @GetMapping("/excluir/{id}")
-    public String excluirAluno(@PathVariable Long id){
+    @PutMapping("/{id}")
+    public ResponseEntity<Aluno> atualizarAluno(@PathVariable Long id, @RequestBody Aluno detalhesAluno){
+        return alunoRepository.findById(id).map(alunoExistente -> {
+            alunoExistente.setNome(detalhesAluno.getNome());
+            alunoExistente.setEmail(detalhesAluno.getEmail());
+            alunoExistente.setMatricula(detalhesAluno.getMatricula());
+            Aluno alunoAtualizado = alunoRepository.save(alunoExistente);
+            return ResponseEntity.ok(alunoAtualizado);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirAluno(@PathVariable Long id){
+        if(!alunoRepository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
         alunoRepository.deleteById(id);
-        return "redirect:/alunos/lista";
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/editar/{id}")
-    public String exibirFormularioDeEdicao(@PathVariable Long id, Model model){
-        Aluno aluno = alunoRepository.findById(id).orElseThrow(()->new IllegalArgumentException("ID do Aluno inválido!" + id));
-        model.addAttribute("aluno",aluno);
-        return "form-aluno";
-    }
+
 }
