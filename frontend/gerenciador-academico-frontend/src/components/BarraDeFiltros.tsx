@@ -1,10 +1,15 @@
-export function BarraDeFiltros(){
+interface BarraDeFiltrosProps{
+    termoBusca: string;
+    onBuscaChange: (novoTermo: string) => void;
+}
+
+export function BarraDeFiltros({termoBusca, onBuscaChange}: BarraDeFiltrosProps){
     return(
         <div className="card mb-4">
             <div className="card-body">
                 <div className="row g-3">
                     <div className="col-12">
-                        <input type="text" className="form-control" placeholder="Informe o nome do aluno e pressione enter."/>
+                        <input type="text" className="form-control" placeholder="Informe o nome do aluno e pressione enter." value={termoBusca} onChange={(evento) => onBuscaChange(evento.target.value)}/>
                     </div>
                     <div className="col-md-3">
                         <select className="form-select">

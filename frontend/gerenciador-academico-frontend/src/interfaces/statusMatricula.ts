@@ -1,0 +1,1 @@
+export type StatusMatricula = 'ATIVA' | 'CANCELADA' | 'FINALIZADA' | 'TRANCADA';
