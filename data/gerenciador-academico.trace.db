@@ -116,3 +116,6 @@ INSERT INTO ALUNO VALUES (1, "Claudio","caljunior@id.uff.br","121341") [42122-23
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-10-15 01:13:56.270297-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]NSERT INTO TURMA (ano, periodo, professor_id, disciplina_id) VALUES ('2025', '1', 1, 1)"; SQL statement:
+NSERT INTO TURMA (ano, periodo, professor_id, disciplina_id) VALUES ('2025', '1', 1, 1) [42000-232]

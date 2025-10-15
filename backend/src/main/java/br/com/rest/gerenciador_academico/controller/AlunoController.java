@@ -48,6 +48,9 @@ public class AlunoController {
             alunoExistente.setNome(detalhesAluno.getNome());
             alunoExistente.setEmail(detalhesAluno.getEmail());
             alunoExistente.setMatricula(detalhesAluno.getMatricula());
+            alunoExistente.setAno(detalhesAluno.getAno());
+            alunoExistente.setSemestre(detalhesAluno.getSemestre());
+            alunoExistente.setStatusMatricula(detalhesAluno.getStatusMatricula());
             Aluno alunoAtualizado = alunoRepository.save(alunoExistente);
             return ResponseEntity.ok(alunoAtualizado);
         }).orElse(ResponseEntity.notFound().build());

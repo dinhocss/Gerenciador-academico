@@ -15,6 +15,9 @@ public class Aluno {
     private String nome;
     private String email;
     private String matricula;
+    private String ano;
+    private String semestre;
+    private String statusMatricula;
 
     //Utilizado para fazer com que a relação de um aluno para muitas inscrições seja feita.
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
