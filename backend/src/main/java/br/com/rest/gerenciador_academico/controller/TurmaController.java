@@ -1,6 +1,7 @@
 package br.com.rest.gerenciador_academico.controller;
 
 import br.com.rest.gerenciador_academico.dto.TurmaDetalhesDTO;
+import br.com.rest.gerenciador_academico.model.Aluno;
 import br.com.rest.gerenciador_academico.model.Turma;
 import br.com.rest.gerenciador_academico.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class TurmaController {
 
     @Autowired
     private TurmaRepository turmaRepository;
+
+    @GetMapping
+    public List<TurmaDetalhesDTO> listarTurmas(){
+        List<Turma> todasAsTurmas = turmaRepository.findAll();
+
+        return todasAsTurmas.stream().map(this::converterParaDTO).collect(Collectors.toList());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<TurmaDetalhesDTO> buscarPorId(@PathVariable Long id){
