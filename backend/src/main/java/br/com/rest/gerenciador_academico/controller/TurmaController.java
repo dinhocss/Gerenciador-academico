@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +27,14 @@ public class TurmaController {
 
     @GetMapping
     public List<TurmaDetalhesDTO> listarTurmas(){
-        List<Turma> todasAsTurmas = turmaRepository.findAll();
+        List<Turma> todasAsTurmas = turmaRepository.findAllComDetalhes();
 
         return todasAsTurmas.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TurmaDetalhesDTO> buscarPorId(@PathVariable Long id){
-        return turmaRepository.findById(id).map(this::converterParaDTO).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return turmaRepository.findByIdComDetalhes(id).map(this::converterParaDTO).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     private TurmaDetalhesDTO converterParaDTO(Turma turma){
@@ -40,15 +42,27 @@ public class TurmaController {
         dto.setId(turma.getId());
         dto.setAno(turma.getAno());
         dto.setPeriodo(turma.getPeriodo());
-        dto.setNomeDisciplina(turma.getDisciplina().getNome());
-        dto.setNomeProfessor(turma.getProfessor().getNome());
+        if(turma.getDisciplina() != null){
+            dto.setNomeDisciplina(turma.getDisciplina().getNome());
+        }
+        if(turma.getProfessor()!=null){
+            dto.setNomeProfessor(turma.getProfessor().getNome());
+        }
 
-        List<TurmaDetalhesDTO.AlunoSimplesDTO> alunosDTO = turma.getInscricoes().stream().map(inscricao -> {
-            TurmaDetalhesDTO.AlunoSimplesDTO alunoDto = new TurmaDetalhesDTO.AlunoSimplesDTO();
-            alunoDto.setId(inscricao.getAluno().getId());
-            alunoDto.setNome(inscricao.getAluno().getNome());
-            return alunoDto;
-        }).collect(Collectors.toList());
+
+
+        List<TurmaDetalhesDTO.AlunoSimplesDTO> alunosDTO = new ArrayList<>();
+        if(turma.getInscricoes()!=null){
+            alunosDTO = new ArrayList<>(turma.getInscricoes()).stream().filter(inscricao->inscricao != null && inscricao.getAluno() !=null).map(inscricao->{
+                TurmaDetalhesDTO.AlunoSimplesDTO alunoDto = new TurmaDetalhesDTO.AlunoSimplesDTO();
+                alunoDto.setId(inscricao.getAluno().getId());
+                alunoDto.setNome(inscricao.getAluno().getNome());
+                alunoDto.setEmail(inscricao.getAluno().getEmail());
+                alunoDto.setMatricula(inscricao.getAluno().getMatricula());
+
+                return alunoDto;
+            }).collect(Collectors.toList());
+        }
 
         dto.setAlunos(alunosDTO);
 

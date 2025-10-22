@@ -1,11 +1,15 @@
 package br.com.rest.gerenciador_academico.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
+
 import java.util.Set;
 
 
-@Data //Lombok (cria automaticamente alguns métodos)
+@Getter
+@Setter
+@NoArgsConstructor//Lombok (cria automaticamente alguns métodos)
 @Entity
 public class Aluno {
     @Id
@@ -19,6 +23,8 @@ public class Aluno {
     private String semestre;
     private String statusMatricula;
 
+    @ToString.Exclude
+    @JsonManagedReference
     //Utilizado para fazer com que a relação de um aluno para muitas inscrições seja feita.
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Inscricao> inscricoes;

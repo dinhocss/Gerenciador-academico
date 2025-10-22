@@ -16,5 +16,7 @@ public class TurmaDetalhesDTO {
     public static class AlunoSimplesDTO{
         private Long id;
         private String nome;
+        private String email;
+        private String matricula;
     }
 }

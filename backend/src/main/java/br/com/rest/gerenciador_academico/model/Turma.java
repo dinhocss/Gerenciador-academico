@@ -1,14 +1,23 @@
 package br.com.rest.gerenciador_academico.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
+@EqualsAndHashCode(exclude = {"inscricoes"})
 public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +35,7 @@ public class Turma {
     private Disciplina disciplina;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore //Evita loop infinito de serialização
-    private Set<Inscricao> inscricoes;
+    @JsonManagedReference//Evita loop infinito de serialização
+    private Set<Inscricao> inscricoes = new HashSet<>();
 }
